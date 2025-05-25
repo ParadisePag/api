@@ -236,10 +236,14 @@ margin-top: 30px;
 
 
   </style>
-
-
 <script>
- const VALOR_PAGAMENTO = {{valor_pagamento}};
+  const VALOR_PAGAMENTO = {{VALOR_PAGAMENTO}};
+  const PIXEL_ID = "{{PIXEL_ID}}";
+  const REDIRECT_URL = "{{URL_REDIRECT}}";
+  const API_URL = "{{URL_GERADOR_API}}";
+  const BANNER_ATIVO = {{BANNER_ATIVO}} === true || "{{BANNER_ATIVO}}" === "true";
+  const CONTADOR_ATIVO = {{CONTADOR_ATIVO}} === true || "{{CONTADOR_ATIVO}}" === "true";
+  const TEMPO_CONTADOR = parseInt("{{TEMPO_CONTADOR}}", 10);
 </script>
 
 </head>
