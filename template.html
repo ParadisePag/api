@@ -6,10 +6,6 @@
   <title>Pagamento via PIX</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --cor-principal: #1DB954;
-      --cor-fundo: #000000;
-    }
     body {
       font-family: 'Roboto', sans-serif;
       background: var(--cor-fundo);
@@ -240,10 +236,11 @@ margin-top: 30px;
   const VALOR_PAGAMENTO = {{VALOR_PAGAMENTO}};
   const PIXEL_ID = "{{PIXEL_ID}}";
   const REDIRECT_URL = "{{URL_REDIRECT}}";
-  const API_URL = "{{URL_GERADOR_API}}";
   const BANNER_ATIVO = {{BANNER_ATIVO}} === true || "{{BANNER_ATIVO}}" === "true";
   const CONTADOR_ATIVO = {{CONTADOR_ATIVO}} === true || "{{CONTADOR_ATIVO}}" === "true";
   const TEMPO_CONTADOR = parseInt("{{TEMPO_CONTADOR}}", 10);
+  const COR_BACKGROUND_CONTAINER = "{{COR_BACKGROUND_CONTAINER}}";
+  const COR_TEXTO = "{{COR_TEXTO}}";
 </script>
 
 </head>
@@ -403,6 +400,9 @@ const segundosElem = document.getElementById('fixed-sec');
 
 
 window.onload = () => {
+document.documentElement.style.setProperty('--cor-fundo', COR_BACKGROUND_CONTAINER);
+document.documentElement.style.setProperty('--cor-principal', COR_TEXTO);
+
   const urlParams = new URLSearchParams(window.location.search);
 
   const nomeParam = urlParams.get("nome");
@@ -458,13 +458,13 @@ window.onload = () => {
     iniciarContador(TEMPO_CONTADOR);
   }
 
-  // ...continua com fetch(geradormonster.php)
+
 
 
 console.log('UTMs:', utmObj);
 
 
-  fetch('/NOVA/pix/geradormonster.php', {
+  fetch('/pix/geradormonster.php', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ name: nome, email, cpf, phone: telefone, utm: utmObj, amount: VALOR_PAGAMENTO })
@@ -488,7 +488,8 @@ if (!transactionHash) {
     document.getElementById('pix-code').title = qrText;
     document.getElementById('VALOR_PAGAMENTO').textContent = (VALOR_PAGAMENTO / 100).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
-    const expiration = new Date(Date.now() + 5 * 60 * 1000);
+    const expiration = new Date(Date.now() + TEMPO_CONTADOR * 1000);
+
     document.getElementById('expiration').textContent = expiration.toLocaleString("pt-BR");
 
 
