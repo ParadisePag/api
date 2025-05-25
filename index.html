@@ -1,21 +1,80 @@
+<!-- index.html - Painel do Gerador Personalizado -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Gerador de Página PIX</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerador Personalizado</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 2rem; background: #f7f7f7; }
+    label { display: block; margin-top: 1rem; font-weight: bold; }
+    input, select { width: 100%; padding: 8px; margin-top: 0.25rem; }
+    button { margin-top: 2rem; padding: 1rem; font-size: 16px; background: #1DB954; color: white; border: none; cursor: pointer; }
+    .group { background: white; padding: 1rem; margin-bottom: 1rem; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+  </style>
 </head>
 <body>
-  <h1>Gerador de Página PIX</h1>
+  <h1>Personalize seu Gerador</h1>
+  <div class="group">
+    <label for="valor">Valor em centavos</label>
+    <input id="valor" placeholder="Ex: 3790">
 
-  <label>Nome do Produto: <input type="text" id="nomeProduto" /></label><br>
-  <label>Valor (centavos): <input type="number" id="valor" /></label><br>
-  <label>Pixel do Facebook: <input type="text" id="pixel" /></label><br>
-  <label>Offer Hash: <input type="text" id="offerHash" /></label><br>
-  <label>Product Hash: <input type="text" id="productHash" /></label><br>
-  <label>Mensagem de Confirmação: <input type="text" id="mensagem" /></label><br><br>
+    <label for="pixel">Facebook Pixel ID</label>
+    <input id="pixel" placeholder="Ex: 123456789">
 
-  <button onclick="gerarArquivo()">Gerar e Baixar gerador.html</button>
+    <label for="redirect">URL de redirecionamento</label>
+    <input id="redirect" placeholder="Ex: /upsell/index.html">
 
-  <script src="main.js"></script>
+    <label for="api">URL da API (geradormonster.php)</label>
+    <input id="api" placeholder="Ex: /NOVA/pix/geradormonster.php">
+  </div>
+
+  <div class="group">
+    <label for="bannerAtivo">Exibir banner?</label>
+    <select id="bannerAtivo">
+      <option value="true">Sim</option>
+      <option value="false">Não</option>
+    </select>
+
+    <label for="contadorAtivo">Exibir contador de tempo?</label>
+    <select id="contadorAtivo">
+      <option value="true">Sim</option>
+      <option value="false">Não</option>
+    </select>
+
+    <label for="tempoContador">Tempo do contador (em segundos)</label>
+    <input id="tempoContador" value="300" placeholder="Ex: 300">
+  </div>
+
+  <button onclick="gerarHTML()">Baixar gerador.html</button>
+
+  <script>
+    async function gerarHTML() {
+      const res = await fetch('template.html');
+      let html = await res.text();
+
+      const replacements = {
+        '{{VALOR_PAGAMENTO}}': document.getElementById('valor').value,
+        '{{PIXEL_ID}}': document.getElementById('pixel').value,
+        '{{URL_REDIRECT}}': document.getElementById('redirect').value,
+        '{{URL_GERADOR_API}}': document.getElementById('api').value,
+        '{{BANNER_ATIVO}}': document.getElementById('bannerAtivo').value,
+        '{{CONTADOR_ATIVO}}': document.getElementById('contadorAtivo').value,
+        '{{TEMPO_CONTADOR}}': document.getElementById('tempoContador').value
+      };
+
+      for (const [chave, valor] of Object.entries(replacements)) {
+        const regex = new RegExp(chave, 'g');
+        html = html.replace(regex, valor);
+      }
+
+      const blob = new Blob([html], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'gerador.html';
+      a.click();
+    }
+  </script>
 </body>
 </html>
