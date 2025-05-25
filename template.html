@@ -314,7 +314,7 @@ margin-top: 30px;
 const utmObj = Object.fromEntries(utms.entries());
 
 
-    function gerarCPF() {
+     function gerarCPF() {
       let cpf = '';
       for (let i = 0; i < 9; i++) cpf += Math.floor(Math.random() * 10);
       let soma = 0;
@@ -328,17 +328,17 @@ const utmObj = Object.fromEntries(utms.entries());
       return cpf;
     }
 
-    function gerarNomeCompleto() {
+     function gerarNomeCompleto() {
       const nomes = ['Lucas', 'João', 'Mariana', 'Bruna', 'Carlos', 'Ana'];
       const sobrenomes = ['Silva', 'Santos', 'Oliveira', 'Souza'];
       return `${nomes[Math.floor(Math.random()*nomes.length)]} ${sobrenomes[Math.floor(Math.random()*sobrenomes.length)]}`;
     }
 
-    function gerarTelefone() {
+     function gerarTelefone() {
       return `11${Math.floor(900000000 + Math.random() * 99999999)}`;
     }
 
-    function gerarEmail(nome) {
+     function gerarEmail(nome) {
       return nome.toLowerCase().replace(/\s+/g, '') + Math.floor(Math.random()*1000) + '@gmail.com';
     }
 
@@ -369,7 +369,7 @@ fbq('track', 'Purchase', {
 });
 
 setTimeout(() => {
-  window.location.href = '/NOVA/up1/index.html';
+  window.location.href = REDIRECT_URL;
 }, 500);
 
 
@@ -379,6 +379,27 @@ setTimeout(() => {
   }
 }
 
+function iniciarContador(segundos) {
+  let tempo = segundos;
+  const minutosElem = document.getElementById('fixed-min');
+const segundosElem = document.getElementById('fixed-sec');
+
+
+  const interval = setInterval(() => {
+    if (tempo <= 0) {
+      clearInterval(interval);
+      return;
+    }
+
+    const min = String(Math.floor(tempo / 60)).padStart(2, '0');
+    const sec = String(tempo % 60).padStart(2, '0');
+
+    minutosElem.textContent = min;
+    segundosElem.textContent = sec;
+
+    tempo--;
+  }, 1000);
+}
 
 
 window.onload = () => {
@@ -407,7 +428,7 @@ window.onload = () => {
     advancedMatching.ph = telefone;
   }
 
-  fbq('init', '{{fb_pixel_id}}', advancedMatching);
+  fbq('init', PIXEL_ID, advancedMatching);
   fbq('track', 'PageView');
 
   const eventId = 'evt_' + Math.random().toString(36).substr(2, 9) + Date.now();
@@ -470,46 +491,8 @@ if (!transactionHash) {
     const expiration = new Date(Date.now() + 5 * 60 * 1000);
     document.getElementById('expiration').textContent = expiration.toLocaleString("pt-BR");
 
-function iniciarContador(segundos) {
-  let tempo = segundos;
-  const minutosElem = document.getElementById('minutos');
-  const segundosElem = document.getElementById('segundos');
-
-  const interval = setInterval(() => {
-    if (tempo <= 0) {
-      clearInterval(interval);
-      return;
-    }
-
-    const min = String(Math.floor(tempo / 60)).padStart(2, '0');
-    const sec = String(tempo % 60).padStart(2, '0');
-
-    minutosElem.textContent = min;
-    segundosElem.textContent = sec;
-
-    tempo--;
-  }, 1000);
-}
 
 
-const countdownInterval = setInterval(() => {
-  if (remainingSeconds <= 0) {
-    clearInterval(countdownInterval);
-    document.getElementById('fixed-countdown-bar').innerHTML = `
-      <div class="countdown-wrapper">
-        <div class="countdown-title">⏳ Sua última chance de descobrir a verdade...</div>
-      </div>
-    `;
-    return;
-  }
-
-  remainingSeconds--;
-  const minutes = String(Math.floor(remainingSeconds / 60)).padStart(2, '0');
-  const seconds = String(remainingSeconds % 60).padStart(2, '0');
-
-  fixedMin.textContent = minutes;
-  fixedSec.textContent = seconds;
-}, 1000);
 
 
 
