@@ -248,7 +248,7 @@ margin-top: 30px;
 
 </head>
 <body>
-<div id="fixed-countdown-bar" {{contador_visibilidade}}>
+<div id="fixed-countdown-bar" {{CONTADOR_ATIVO}}>
   <div class="countdown-top">OPORTUNIDADE ÚNICA...</div>
   <div class="countdown-bottom">
     <div class="countdown-values">
@@ -269,9 +269,16 @@ margin-top: 30px;
       <strong>Gerando QR Code...</strong>
     </div>
 
-    <div id="conteudo-pix" style="display: none;">
-      <img id="banner" src="{{banner_src}}" alt="Banner do Produto" {{banner_visibilidade}}>
-      <div class="section-title">📱 Escaneie o QRCode abaixo</div>
+<div id="conteudo-pix" style="display: none;">
+
+  <div id="banner-container" style="display: {{BANNER_ATIVO}};">
+    <img src="images/bannergerador.png" alt="Banner do Produto" />
+  </div>
+
+
+  <div class="section-title">📱 Escaneie o QRCode abaixo</div>
+
+
 
 
 
@@ -420,6 +427,13 @@ window.onload = () => {
     document.getElementById('confirm-text').innerHTML =
       `Enviaremos seu acesso por email após a confirmação.`;
   }
+if (BANNER_ATIVO) {
+  document.getElementById('banner').style.display = 'block';
+}
+if (CONTADOR_ATIVO) {
+  document.getElementById('contador').style.display = 'block';
+  iniciarContador(TEMPO_CONTADOR);
+}
 
   // ...continua com fetch(geradormonster.php)
 
@@ -454,9 +468,27 @@ if (!transactionHash) {
     const expiration = new Date(Date.now() + 5 * 60 * 1000);
     document.getElementById('expiration').textContent = expiration.toLocaleString("pt-BR");
 
-let remainingSeconds = {{tempo_segundos}};
-const fixedMin = document.getElementById('fixed-min');
-const fixedSec = document.getElementById('fixed-sec');
+function iniciarContador(segundos) {
+  let tempo = segundos;
+  const minutosElem = document.getElementById('minutos');
+  const segundosElem = document.getElementById('segundos');
+
+  const interval = setInterval(() => {
+    if (tempo <= 0) {
+      clearInterval(interval);
+      return;
+    }
+
+    const min = String(Math.floor(tempo / 60)).padStart(2, '0');
+    const sec = String(tempo % 60).padStart(2, '0');
+
+    minutosElem.textContent = min;
+    segundosElem.textContent = sec;
+
+    tempo--;
+  }, 1000);
+}
+
 
 const countdownInterval = setInterval(() => {
   if (remainingSeconds <= 0) {
