@@ -34,3 +34,44 @@ function gerarArquivo() {
   a.click();
   URL.revokeObjectURL(url);
 }
+
+function previewHTML() {
+  const iframe = document.createElement('iframe');
+  iframe.style.width = '100%';
+  iframe.style.height = '90vh';
+  iframe.style.marginTop = '2rem';
+  iframe.style.border = '1px solid #ccc';
+
+  const blob = new Blob([gerarHTMLString()], { type: 'text/html' });
+  iframe.src = URL.createObjectURL(blob);
+  document.body.appendChild(iframe);
+}
+
+function gerarHTMLString() {
+  let html = window.__templateRaw__;
+
+  const replacements = {
+    '{{VALOR_PAGAMENTO}}': document.getElementById('valor').value,
+    '{{PIXEL_ID}}': document.getElementById('pixel').value,
+    '{{URL_REDIRECT}}': document.getElementById('redirect').value,
+    '{{BANNER_ATIVO}}': document.getElementById('bannerAtivo').value,
+    '{{CONTADOR_ATIVO}}': document.getElementById('contadorAtivo').value,
+    '{{TEMPO_CONTADOR}}': document.getElementById('tempoContador').value,
+    '{{COR_TEXTO}}': document.getElementById('corTexto').value,
+    '{{COR_BACKGROUND_CONTAINER}}': document.getElementById('corFundoContainer').value
+  };
+
+  for (const [chave, valor] of Object.entries(replacements)) {
+    const regex = new RegExp(chave, 'g');
+    html = html.replace(regex, valor);
+  }
+
+  return html;
+}
+
+(async function carregarTemplate() {
+  const res = await fetch('template.html');
+  const text = await res.text();
+  window.__templateRaw__ = text;
+})();
+
