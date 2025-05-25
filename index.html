@@ -17,16 +17,14 @@
   <h1>Personalize seu Gerador</h1>
   <div class="group">
     <label for="valor">Valor em centavos</label>
-    <input id="valor" placeholder="Ex: 3790">
+    <input id="valor" placeholder="Ex: 2590">
 
     <label for="pixel">Facebook Pixel ID</label>
     <input id="pixel" placeholder="Ex: 123456789">
 
     <label for="redirect">URL de redirecionamento</label>
-    <input id="redirect" placeholder="Ex: /upsell/index.html">
+    <input id="redirect" placeholder="Ex: https://seusite.com/upsell1">
 
-    <label for="api">URL da API (geradormonster.php)</label>
-    <input id="api" placeholder="Ex: /NOVA/pix/geradormonster.php">
   </div>
 
   <div class="group">
@@ -44,24 +42,34 @@
 
     <label for="tempoContador">Tempo do contador (em segundos)</label>
     <input id="tempoContador" value="300" placeholder="Ex: 300">
+<label for="corTexto">Cor do texto (ex: #ffffff)</label>
+<input id="corTexto" value="#ffffff" placeholder="Ex: #ffffff">
+
+<label for="corFundoContainer">Cor do fundo do container (ex: #111111)</label>
+<input id="corFundoContainer" value="#000000" placeholder="Ex: #111111">
+
   </div>
 
+
   <button onclick="gerarHTML()">Baixar gerador.html</button>
+<button onclick="previewHTML()">Pré-visualizar</button>
 
   <script>
     async function gerarHTML() {
       const res = await fetch('template.html');
       let html = await res.text();
 
-      const replacements = {
-        '{{VALOR_PAGAMENTO}}': document.getElementById('valor').value,
-        '{{PIXEL_ID}}': document.getElementById('pixel').value,
-        '{{URL_REDIRECT}}': document.getElementById('redirect').value,
-        '{{URL_GERADOR_API}}': document.getElementById('api').value,
-        '{{BANNER_ATIVO}}': document.getElementById('bannerAtivo').value,
-        '{{CONTADOR_ATIVO}}': document.getElementById('contadorAtivo').value,
-        '{{TEMPO_CONTADOR}}': document.getElementById('tempoContador').value
-      };
+const replacements = {
+  '{{VALOR_PAGAMENTO}}': document.getElementById('valor').value,
+  '{{PIXEL_ID}}': document.getElementById('pixel').value,
+  '{{URL_REDIRECT}}': document.getElementById('redirect').value,
+  '{{BANNER_ATIVO}}': document.getElementById('bannerAtivo').value,
+  '{{CONTADOR_ATIVO}}': document.getElementById('contadorAtivo').value,
+  '{{TEMPO_CONTADOR}}': document.getElementById('tempoContador').value,
+  '{{COR_TEXTO}}': document.getElementById('corTexto').value,
+  '{{COR_BACKGROUND_CONTAINER}}': document.getElementById('corFundoContainer').value
+};
+
 
       for (const [chave, valor] of Object.entries(replacements)) {
         const regex = new RegExp(chave, 'g');
