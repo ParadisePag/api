@@ -34,14 +34,6 @@
       <option value="false">Não</option>
     </select>
 
-    <label for="contadorAtivo">Exibir contador de tempo?</label>
-    <select id="contadorAtivo">
-      <option value="true">Sim</option>
-      <option value="false">Não</option>
-    </select>
-
-    <label for="tempoContador">Tempo do contador (em segundos)</label>
-    <input id="tempoContador" value="300" placeholder="Ex: 300">
 <label for="corTexto">Cor do texto (ex: #ffffff)</label>
 <input id="corTexto" value="#ffffff" placeholder="Ex: #ffffff">
 
@@ -66,8 +58,6 @@ const replacements = {
   '{{PIXEL_ID}}': document.getElementById('pixel').value,
   '{{URL_REDIRECT}}': document.getElementById('redirect').value,
   '{{BANNER_ATIVO}}': document.getElementById('bannerAtivo').value,
-  '{{CONTADOR_ATIVO}}': document.getElementById('contadorAtivo').value,
-  '{{TEMPO_CONTADOR}}': document.getElementById('tempoContador').value,
   '{{COR_TEXTO}}': document.getElementById('corTexto').value,
   '{{COR_BACKGROUND_CONTAINER}}': document.getElementById('corFundoContainer').value
 };
@@ -86,7 +76,13 @@ const replacements = {
       a.click();
     }
 function previewHTML() {
+  const existingIframe = document.getElementById('preview-frame');
+  if (existingIframe) {
+    existingIframe.remove();
+  }
+
   const iframe = document.createElement('iframe');
+  iframe.id = 'preview-frame';
   iframe.style.width = '100%';
   iframe.style.height = '90vh';
   iframe.style.marginTop = '2rem';
@@ -96,6 +92,7 @@ function previewHTML() {
   iframe.src = URL.createObjectURL(blob);
   document.body.appendChild(iframe);
 }
+
 
 function gerarHTMLString() {
   let html = window.__templateRaw__;
