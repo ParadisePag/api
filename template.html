@@ -248,7 +248,7 @@ margin-top: 30px;
 
 </head>
 <body>
-<div id="fixed-countdown-bar" {{CONTADOR_ATIVO}}>
+<div id="fixed-countdown-bar" style="display: none;">
   <div class="countdown-top">OPORTUNIDADE ÚNICA...</div>
   <div class="countdown-bottom">
     <div class="countdown-values">
@@ -271,9 +271,10 @@ margin-top: 30px;
 
 <div id="conteudo-pix" style="display: none;">
 
-  <div id="banner-container" style="display: {{BANNER_ATIVO}};">
-    <img src="images/bannergerador.png" alt="Banner do Produto" />
-  </div>
+  <div id="banner-container" style="display: none;">
+  <img id="banner-img" src="images/bannergerador.png" alt="Banner do Produto" />
+</div>
+
 
 
   <div class="section-title">📱 Escaneie o QRCode abaixo</div>
@@ -427,13 +428,14 @@ window.onload = () => {
     document.getElementById('confirm-text').innerHTML =
       `Enviaremos seu acesso por email após a confirmação.`;
   }
-if (BANNER_ATIVO) {
-  document.getElementById('banner').style.display = 'block';
-}
-if (CONTADOR_ATIVO) {
-  document.getElementById('contador').style.display = 'block';
-  iniciarContador(TEMPO_CONTADOR);
-}
+  if (BANNER_ATIVO) {
+    document.getElementById('banner-container').style.display = 'block';
+  }
+
+  if (CONTADOR_ATIVO) {
+    document.getElementById('fixed-countdown-bar').style.display = 'block';
+    iniciarContador(TEMPO_CONTADOR);
+  }
 
   // ...continua com fetch(geradormonster.php)
 
