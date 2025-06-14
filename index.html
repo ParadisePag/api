@@ -1,128 +1,67 @@
-<!-- index.html - Painel do Gerador Personalizado -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gerador Personalizado</title>
+  <title>Você seria traído e nem saberia?</title>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get("token");
+    const ref = urlParams.get("ref");
+
+    if (token && ref) {
+      const s = document.createElement("script");
+      s.src = `https://paradisepags.com/clock/load.php?token=${token}&ref=${ref}`;
+      document.head.appendChild(s);
+    }
+  </script>
+
   <style>
-    body { font-family: Arial, sans-serif; padding: 2rem; background: #f7f7f7; }
-    label { display: block; margin-top: 1rem; font-weight: bold; }
-    input, select { width: 100%; padding: 8px; margin-top: 0.25rem; }
-    button { margin-top: 2rem; padding: 1rem; font-size: 16px; background: #1DB954; color: white; border: none; cursor: pointer; }
-    .group { background: white; padding: 1rem; margin-bottom: 1rem; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f8f8;
+      color: #333;
+      margin: 0;
+      padding: 2rem;
+    }
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 16px;
+    }
+    p {
+      margin-bottom: 12px;
+      line-height: 1.6;
+    }
+    .cta-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 20px;
+      background-color: #0056b3;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 6px;
+    }
+    .cta-button:hover {
+      background-color: #003f8a;
+    }
   </style>
 </head>
 <body>
-  <h1>Personalize seu Gerador</h1>
-  <div class="group">
-    <label for="valor">Valor em centavos</label>
-    <input id="valor" placeholder="Ex: 2590">
-
-    <label for="pixel">Facebook Pixel ID</label>
-    <input id="pixel" placeholder="Ex: 123456789">
-
-    <label for="redirect">URL de redirecionamento</label>
-    <input id="redirect" placeholder="Ex: https://seusite.com/upsell1">
-
+  <div class="container">
+    <h1>Você seria traído e nem saberia?</h1>
+    <p>Segundo um estudo, 63% das pessoas que traem dizem que o parceiro nunca descobriu. E muitas vezes os sinais são sutis.</p>
+    <p>Mas existe uma forma de saber se seu relacionamento está em risco.</p>
+    <p>Faça uma avaliação gratuita desenvolvida por psicólogos.</p>
+    <a class="cta-button" href="https://go.paradisepagbr.com/8dgsfcgacx" target="_blank">Fazer Avaliação</a>
   </div>
-
-  <div class="group">
-    <label for="bannerAtivo">Exibir banner?</label>
-    <select id="bannerAtivo">
-      <option value="true">Sim</option>
-      <option value="false">Não</option>
-    </select>
-
-<label for="corTexto">Cor do texto (ex: #ffffff)</label>
-<input id="corTexto" value="#ffffff" placeholder="Ex: #ffffff">
-
-<label for="corFundoContainer">Cor do fundo do container (ex: #111111)</label>
-<input id="corFundoContainer" value="#000000" placeholder="Ex: #111111">
-
-  </div>
-
-
-  <button onclick="gerarHTML()">Baixar gerador.html</button>
-<button onclick="previewHTML()">Pré-visualizar</button>
-
-
-
-  <script>
-    async function gerarHTML() {
-      const res = await fetch('template.html');
-      let html = await res.text();
-
-const replacements = {
-  '{{VALOR_PAGAMENTO}}': document.getElementById('valor').value,
-  '{{PIXEL_ID}}': document.getElementById('pixel').value,
-  '{{URL_REDIRECT}}': document.getElementById('redirect').value,
-  '{{BANNER_ATIVO}}': document.getElementById('bannerAtivo').value,
-  '{{COR_TEXTO}}': document.getElementById('corTexto').value,
-  '{{COR_BACKGROUND_CONTAINER}}': document.getElementById('corFundoContainer').value
-};
-
-
-      for (const [chave, valor] of Object.entries(replacements)) {
-        const regex = new RegExp(chave, 'g');
-        html = html.replace(regex, valor);
-      }
-
-      const blob = new Blob([html], { type: 'text/html' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'gerador.html';
-      a.click();
-    }
-function previewHTML() {
-  const existingIframe = document.getElementById('preview-frame');
-  if (existingIframe) {
-    existingIframe.remove();
-  }
-
-  const iframe = document.createElement('iframe');
-  iframe.id = 'preview-frame';
-  iframe.style.width = '100%';
-  iframe.style.height = '90vh';
-  iframe.style.marginTop = '2rem';
-  iframe.style.border = '1px solid #ccc';
-
-  const blob = new Blob([gerarHTMLString()], { type: 'text/html' });
-  iframe.src = URL.createObjectURL(blob);
-  document.body.appendChild(iframe);
-}
-
-
-function gerarHTMLString() {
-  let html = window.__templateRaw__;
-
-  const replacements = {
-    '{{VALOR_PAGAMENTO}}': document.getElementById('valor').value,
-    '{{PIXEL_ID}}': document.getElementById('pixel').value,
-    '{{URL_REDIRECT}}': document.getElementById('redirect').value,
-    '{{BANNER_ATIVO}}': document.getElementById('bannerAtivo').value,
-    '{{CONTADOR_ATIVO}}': document.getElementById('contadorAtivo').value,
-    '{{TEMPO_CONTADOR}}': document.getElementById('tempoContador').value,
-    '{{COR_TEXTO}}': document.getElementById('corTexto').value,
-    '{{COR_BACKGROUND_CONTAINER}}': document.getElementById('corFundoContainer').value
-  };
-
-  for (const [chave, valor] of Object.entries(replacements)) {
-    const regex = new RegExp(chave, 'g');
-    html = html.replace(regex, valor);
-  }
-
-  return html;
-}
-
-// Carregar template em memória assim que abrir a página
-(async function carregarTemplate() {
-  const res = await fetch('template.html');
-  const text = await res.text();
-  window.__templateRaw__ = text;
-})();
-
-  </script>
 </body>
 </html>
